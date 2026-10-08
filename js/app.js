@@ -150,7 +150,7 @@ function renderExam() {
     <div class="exam-head">
       <p class="eyebrow">${isTheory ? 'Parte 1 · Teoría' : 'Parte 2 · Práctica'}</p>
       <div class="progress" role="progressbar" aria-label="Avance del examen" aria-valuemin="1" aria-valuemax="${ORDER.length}" aria-valuenow="${state.index + 1}">
-        <span style="width:${pct}%"></span>
+        <span style="transform:scaleX(${pct / 100})"></span>
       </div>
       <p class="progress-text">Pregunta ${state.index + 1} de ${ORDER.length} · ${answered} respondidas</p>
     </div>

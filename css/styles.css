@@ -24,7 +24,7 @@
   --shadow: 0 1px 2px rgb(20 20 20 / 0.05), 0 6px 20px rgb(20 20 20 / 0.05);
   --radius: 14px;
   --radius-s: 10px;
-  --font-title: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-title: 'Newsreader', Georgia, 'Times New Roman', serif;
   --font-body: 'Public Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
   color-scheme: light;
@@ -143,7 +143,7 @@ input[aria-invalid="true"] { border-color: var(--bad); }
 /* ---------- Examen ---------- */
 .exam-head { margin-bottom: 1rem; }
 .progress { height: 8px; background: var(--surface-2); border-radius: 99px; overflow: hidden; border: 1px solid var(--line); }
-.progress span { display: block; height: 100%; background: var(--accent); border-radius: 99px; transition: width .4s var(--ease); }
+.progress span { display: block; width: 100%; height: 100%; background: var(--accent); border-radius: 99px; transform-origin: left; transition: transform .4s var(--ease); }
 .progress-text { font-size: .9rem; color: var(--ink-2); margin: .45rem 0 0; }
 .q-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .75rem; font-size: .9rem; margin-bottom: .75rem; }
 .chip { display: inline-block; padding: .2rem .65rem; border-radius: 99px; background: var(--surface-2); border: 1px solid var(--line); font-size: .82rem; font-weight: 600; }
@@ -202,9 +202,9 @@ input[aria-invalid="true"] { border-color: var(--bad); }
 .diag-title.is-ok, .topic.is-ok .icon { color: var(--ok); }
 .diag-title.is-review, .topic.is-review .icon { color: var(--warn); }
 .topic-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
-.topic { display: flex; gap: .7rem; padding: .75rem .85rem; border-radius: var(--radius-s); border-left: 4px solid; }
-.topic.is-ok { background: var(--ok-soft); border-color: var(--ok); }
-.topic.is-review { background: var(--warn-soft); border-color: var(--warn); }
+.topic { display: flex; gap: .7rem; padding: .75rem .85rem; border-radius: var(--radius-s); border: 1px solid; }
+.topic.is-ok { background: var(--ok-soft); border-color: color-mix(in srgb, var(--ok) 25%, transparent); }
+.topic.is-review { background: var(--warn-soft); border-color: color-mix(in srgb, var(--warn) 25%, transparent); }
 .topic .icon { margin-top: .2em; }
 .topic-name { font-weight: 700; margin: 0; }
 .topic-reason { font-size: .93rem; margin: .15rem 0 0; color: var(--ink); }
