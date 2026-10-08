@@ -55,6 +55,8 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+/* Los elementos con el atributo hidden nunca se muestran, aunque su clase use display:flex. */
+[hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
