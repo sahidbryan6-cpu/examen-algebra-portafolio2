@@ -1,0 +1,60 @@
+rules_version = '2';
+
+// Reglas del examen de Álgebra.
+// - Cualquier alumno (sin sesión) puede CREAR su registro y sus intentos de refuerzo.
+// - Nadie puede MODIFICAR un registro existente.
+// - Solo el administrador (correo + contraseña) puede LEER, LISTAR y BORRAR.
+// Antes de publicar estas reglas, reemplaza __ADMIN_EMAIL__ por el correo del administrador.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == '__ADMIN_EMAIL__'
+        && request.auth.token.firebase.sign_in_provider == 'password';
+    }
+
+    function validRecord(id) {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['id', 'version', 'nombre', 'grupo', 'inicioMs', 'finMs', 'duracionMs',
+                               'notaTeorica', 'notaPractica', 'notaGlobal', 'aciertosTeoria', 'aciertosPractica',
+                               'respuestas', 'temas', 'dispositivo', 'intentoLocal', 'creado'])
+        && d.keys().hasAll(['id', 'nombre', 'inicioMs', 'finMs', 'notaGlobal', 'respuestas', 'creado'])
+        && d.id == id
+        && d.nombre is string && d.nombre.size() >= 3 && d.nombre.size() <= 120
+        && d.grupo is string && d.grupo.size() <= 60
+        && d.notaTeorica is number && d.notaTeorica >= 0 && d.notaTeorica <= 10
+        && d.notaPractica is number && d.notaPractica >= 0 && d.notaPractica <= 10
+        && d.notaGlobal is number && d.notaGlobal >= 0 && d.notaGlobal <= 10
+        && d.inicioMs is number && d.finMs is number && d.finMs >= d.inicioMs
+        && d.respuestas is list && d.respuestas.size() <= 30
+        && d.creado == request.time;
+    }
+
+    function validEntry(rid) {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['rid', 'tipo', 'clave', 'tema', 'clase', 'ref', 'respuesta', 'correcta', 'vioSolucion',
+                               'estado', 'error', 'tiempoMs', 'fechaMs', 'antes', 'despues', 'resumen', 'creado'])
+        && d.rid == rid
+        && d.tipo in ['intento', 'resumen']
+        && d.creado == request.time;
+    }
+
+    match /registros/{id} {
+      allow create: if validRecord(id);
+      allow get, list, delete: if isAdmin();
+      allow update: if false;
+
+      match /refuerzo/{rid} {
+        allow create: if exists(/databases/$(database)/documents/registros/$(id)) && validEntry(rid);
+        allow get, list, delete: if isAdmin();
+        allow update: if false;
+      }
+    }
+
+    // Todo lo demás está cerrado.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

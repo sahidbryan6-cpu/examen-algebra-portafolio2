@@ -1,0 +1,9 @@
+{
+  "name": "examen-algebra-portafolio2",
+  "private": true,
+  "type": "module",
+  "description": "Examen diagnóstico interactivo del Portafolio 2 de Álgebra (sitio estático, sin compilación).",
+  "scripts": {
+    "test": "node tests/verify.mjs"
+  }
+}

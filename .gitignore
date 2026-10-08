@@ -1,0 +1,9 @@
+node_modules/
+.firebase/
+*-debug.log
+.qodo/
+.impeccable/
+# Nunca subir datos de alumnos ni secretos
+resultados-*.json
+resultados-*.csv
+.env*
